@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: rabbitmq/Dockerfile
+    container_name: rabbitmq
+    expose:
+      - "5672"
+      - "15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    env_file:
+      - .env
+    networks:
+      - project-network
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1
+
   nginx:
     container_name: nginx
     image: nginx:1.23
@@ -11,6 +32,13 @@ services:
       - "8080:8080"
       - "8084:8084"
     restart: always
+    networks:
+      - project-network
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:5044
+        tag: nginx
 
   postgres:
     container_name: postgres
@@ -20,6 +48,8 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
+    networks:
+      - project-network
     healthcheck:
       test: [ "CMD-SHELL", "su postgres", "&&", "pg_isready" ]
       interval: 5s
@@ -30,6 +60,8 @@ services:
     container_name: redis
     image: redis:7.0.4-alpine
     restart: always
+    networks:
+      - project-network
     expose:
       - 6379
     volumes:
@@ -43,6 +75,10 @@ services:
       context: services/auth
       dockerfile: Dockerfile
     restart: always
+    networks:
+      - project-network
+    expose:
+      - 8081
     env_file:
       - .env
 
@@ -52,6 +88,10 @@ services:
       context: services/ugc
       dockerfile: Dockerfile
     restart: always
+    networks:
+      - project-network
+    expose:
+      - 8082
     env_file:
       - .env
 
@@ -61,10 +101,50 @@ services:
       context: services/movies
       dockerfile: Dockerfile
     restart: always
+    networks:
+      - project-network
+    expose:
+      - 8083
     env_file:
       - .env
+
+  booking_api:
+    container_name: booking_api
+    build:
+      context: services/booking/api
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - project-network
+    env_file:
+      - .env
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:5044
+        tag: nginx
+
+  watcher:
+    container_name: watcher
+    build:
+      context: services/booking/watcher
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - project-network
+    env_file:
+      - .env
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:5044
+        tag: nginx
 
 
 volumes:
   postgres_data:
   cache:
+
+networks:
+  project-network:
+    external: true

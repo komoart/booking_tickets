@@ -15,7 +15,7 @@ RUN apt update && apt install -y \
   gettext \
   musl-dev \
   && rm -rf /var/lib/apt/lists/*
-RUN python3 -m pip install -U pip
+
 WORKDIR /auth_app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt

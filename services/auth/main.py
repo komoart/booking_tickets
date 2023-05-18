@@ -8,8 +8,8 @@ from utils import create_event, get_fake_group, get_fake_user
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    docs_url='/api/openapi',
-    openapi_url='/api/openapi.json',
+    docs_url='/auth/api/openapi',
+    openapi_url='/auth/api/openapi.json',
     default_response_class=ORJSONResponse,
 )
 

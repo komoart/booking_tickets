@@ -15,7 +15,6 @@ RUN apt update && apt install -y \
   gettext \
   musl-dev \
   && rm -rf /var/lib/apt/lists/*
-RUN python3 -m pip install -U pip
 
 WORKDIR /ugc_app
 COPY requirements.txt requirements.txt

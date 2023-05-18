@@ -9,8 +9,8 @@ from utils import get_fake_group, get_fake_review_info
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    docs_url='/api/openapi',
-    openapi_url='/api/openapi.json',
+    docs_url='/ugc/api/openapi',
+    openapi_url='/ugc/api/openapi.json',
     default_response_class=ORJSONResponse,
 )
 

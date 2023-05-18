@@ -7,13 +7,13 @@ from utils import get_fake_movie
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    docs_url='/api/openapi',
-    openapi_url='/api/openapi.json',
+    docs_url='/movie/api/openapi',
+    openapi_url='/movie/api/openapi.json',
     default_response_class=ORJSONResponse,
 )
 
 
-@app.post('/movie_api/v1/movie/{uuid}')
+@app.post('/movie/v1/movie/{uuid}')
 async def user_info(uuid: str):
     return get_fake_movie(uuid)
 
