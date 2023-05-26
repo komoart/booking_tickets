@@ -1,0 +1,49 @@
+version: '2.2'
+services:
+    logstash:
+      container_name: logstash
+      image: bitnami/logstash:latest
+      depends_on:
+        - elasticsearch
+      environment:
+        XPACK_MONITORING_ENABLED: "false"
+        ES_HOST: "elasticsearch:9200"
+      ports:
+        - "5047:5047/udp"
+        - "5046:5046/udp"
+        - "5045:5045/udp"
+        - "5044:5044/udp"
+        - "5043:5043/udp"
+      volumes:
+        - ./deploy:/config
+      command: logstash -f /config/logstash.conf
+
+      networks:
+        - project-network
+
+    elasticsearch:
+      image: bitnami/elasticsearch:latest
+      environment:
+        discovery.type: single-node
+        xpack.security.enabled: false
+        ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+      ports:
+        - 9200:9200
+      volumes:
+        - /tmp/esdata:/tmp/elasticsearch/data
+      networks:
+        - project-network
+
+    kibana:
+      image: bitnami/kibana
+      ports:
+        - "5601:5601"
+      depends_on:
+        - elasticsearch
+
+      networks:
+        - project-network
+
+networks:
+  project-network:
+    external: true
