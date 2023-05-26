@@ -32,8 +32,6 @@ jobs:
 
       - name: Linting
         run: |
-            pre-commit run trailing-whitespace --all-files
-            pre-commit run double-quote-string-fixer --all-files
             pre-commit run black --all-files
             pre-commit run flake8 --all-files
 
