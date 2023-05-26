@@ -403,6 +403,8 @@ POST
 /movie_api/v1/movie/{uuid}
 ```
 
-## Graylog
+## SENTRY
 
-ссылка на схему
+Пример уведомления
+
+![](docs/sentry.png)
