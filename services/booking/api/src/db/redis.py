@@ -28,8 +28,7 @@ class RedisCache(CacheProtocol):
             return None
         return orjson.loads(value)
 
-    async def set(self, key: str,
-                  value: Any, exp: int = settings.redis.EXPIRE_SEC) -> None:
+    async def set(self, key: str, value: Any, exp: int = settings.redis.EXPIRE_SEC) -> None:
         await self.session.set(key, orjson.dumps(value), ex=exp)
 
     async def close(self) -> None:

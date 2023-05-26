@@ -70,6 +70,30 @@ cd ../
 docker-compose up
 ```
 
+5. Получить идентификаторы и токены доступов
+```shell
+python jwt_token.py
+```
+
+```json
+{
+  "user": "f55291b9-c09d-405b-b025-36f26c887905", 
+  "user_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNTUyOTFiOS1jMDlkLTQwNWItYjAyNS0zNmYyNmM4ODc5MDUiLCJwZXJtaXNzaW9ucyI6WzAsM10sImlzX3N1cGVyIjpmYWxzZX0.2WPPv2WQnidid3uDKROtmUSHLGwXtrw-LvipKNCjOFQ",
+  
+  "sudo": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a",
+  "sudo_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNWE4ZjU3My0zY2VlLTRjY2MtOGEyYi05MWNiOWY1NTI1MGEiLCJwZXJtaXNzaW9ucyI6WzAsM10sImlzX3N1cGVyIjp0cnVlfQ.t2XpMQQhN7lJ1eXQWaSGgjiSt1qlhaPTT-HYaRa2umc",
+  
+  "author": "50760ee6-2073-445d-ad25-f665937f3b33",
+  "author_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MDc2MGVlNi0yMDczLTQ0NWQtYWQyNS1mNjY1OTM3ZjNiMzMiLCJwZXJtaXNzaW9ucyI6WzAsM10sImlzX3N1cGVyIjpmYWxzZX0.Osgl1ubOKLHiAI-FrfA8HdZnEA7DlXmYBpj-UTwgp6w",
+  
+  "guest_1": "39e60237-83ea-4c65-9bc9-f6b47d109738",
+  "guest_1_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOWU2MDIzNy04M2VhLTRjNjUtOWJjOS1mNmI0N2QxMDk3MzgiLCJwZXJtaXNzaW9ucyI6WzAsM10sImlzX3N1cGVyIjpmYWxzZX0.sjEPqtfXJnj6nYxPLCs_dO2j1jEvl8dkzfhojCp-uz0",
+  
+  "guest_2": "d0c5635c-3211-4cf8-94ab-cbe6800771c4",
+  "guest_2_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMGM1NjM1Yy0zMjExLTRjZjgtOTRhYi1jYmU2ODAwNzcxYzQiLCJwZXJtaXNzaW9ucyI6WzAsM10sImlzX3N1cGVyIjpmYWxzZX0.5Ae__t-XpIUZswIZtoHMDsxhyr91V9uwb7ZkTG9lWP8",
+}
+```
+
 ## BOOKING API
 
 Сервис бронирования билетов.
@@ -79,7 +103,7 @@ docker-compose up
 http://localhost:8080/api/openapi#/
 ```
 
-![](docs/booking_openapi.png)
+![](docs/booking_openapi_v.2.png)
 
 ### Организатор
 
@@ -110,12 +134,188 @@ http://localhost:8080/api/openapi#/
 - Нельзя создавать дубликаты объявлений от одного пользователя
 - Проверять права пользователя перед изменением записи
 
+<hr style="border:2px solid gray">
+Создание объявления
+
+Request URL
+```shell
+http://localhost:8080/app/v1/announcement/23536729-1e1f-4639-a9cf-0883634143ab
+```
+
+Server response
+```json
+{
+  "id": "3b694076-c2a2-4aac-b7e1-b496a3f9724b",
+  "created": "2023-05-26T12:45:22.889921+00:00",
+  "modified": "2023-05-26T12:45:22.889933+00:00",
+  "status": "Created",
+  "title": "Fake Title",
+  "description": "Fake description",
+  "movie_title": "Fake movie",
+  "author_name": "Max Reed",
+  "sub_only": false,
+  "is_free": true,
+  "tickets_count": 2,
+  "tickets_left": 2,
+  "event_time": "2023-05-26T12:45:22.842896+00:00",
+  "event_location": "Fake location",
+  "guest_list": [],
+  "author_rating": 4.9,
+  "duration": 0
+}
+```
+
+Получение всей информации по объявлению
+
+Request URL
+```shell
+http://localhost:8080/app/v1/announcement/2a580a71-4ba6-4626-b88e-381d3cf6e1da
+```
+
+Server response
+```json
+{
+  "id": "2a580a71-4ba6-4626-b88e-381d3cf6e1da",
+  "created": "2023-05-26T11:19:13.822707+00:00",
+  "modified": "2023-05-26T11:19:13.822714+00:00",
+  "status": "Created",
+  "title": "Fake Title",
+  "description": "Fake description",
+  "movie_title": "Fake movie",
+  "author_name": "Max Reed",
+  "sub_only": false,
+  "is_free": true,
+  "tickets_count": 2,
+  "tickets_left": 2,
+  "event_time": "2023-05-26T11:19:13.732697+00:00",
+  "event_location": "Fake location",
+  "guest_list": [],
+  "author_rating": 4.9,
+  "duration": 0
+}
+```
+
+Получение списка всех объявлений
+
+Request URL
+```shell
+http://localhost:8080/app/v1/announcements
+```
+
+Server response
+```json
+[
+  {
+    "id": "2a580a71-4ba6-4626-b88e-381d3cf6e1da",
+    "title": "Fake Title",
+    "author_id": "f55291b9-c09d-405b-b025-36f26c887905",
+    "sub_only": false,
+    "is_free": true,
+    "tickets_count": 2,
+    "event_time": "2023-05-26T11:19:13.732697+00:00",
+    "event_location": "Fake location",
+    "duration": 0
+  },
+  {
+    "id": "52b1c581-5ab9-48c1-9df6-52f29bc71872",
+    "title": "Fake Title",
+    "author_id": "f55291b9-c09d-405b-b025-36f26c887905",
+    "sub_only": false,
+    "is_free": true,
+    "tickets_count": 2,
+    "event_time": "2023-05-26T11:20:39.945723+00:00",
+    "event_location": "Fake location",
+    "duration": 0
+  },
+  {
+    "id": "3b694076-c2a2-4aac-b7e1-b496a3f9724b",
+    "title": "Fake Title",
+    "author_id": "f55291b9-c09d-405b-b025-36f26c887905",
+    "sub_only": false,
+    "is_free": true,
+    "tickets_count": 2,
+    "event_time": "2023-05-26T12:45:22.842896+00:00",
+    "event_location": "Fake location",
+    "duration": 0
+  }
+]
+```
+
+<hr style="border:2px solid gray">
+
 ### Бронирование
 
 - Нельзя быть гостем на своем событии
 - Нельзя регистрироваться на события с одним временем начала
 - Проверять права пользователя перед изменением записи
 - Показывать пользователю только его записи
+
+
+Создание бронирования
+
+Request URL
+```shell
+http://localhost:8080/app/v1/booking/52b1c581-5ab9-48c1-9df6-52f29bc71872
+```
+
+Server response
+```json
+{
+  "id": "862cc5f8-d445-48b0-bcec-2219a97093c8",
+  "announcement_id": "52b1c581-5ab9-48c1-9df6-52f29bc71872",
+  "movie_title": "Fake movie",
+  "author_name": "Michael Simpson",
+  "guest_name": "Greg Porter",
+  "author_status": null,
+  "guest_status": true,
+  "guest_rating": 0,
+  "author_rating": 0.2,
+  "event_time": "2023-05-26T11:20:39.945723+00:00"
+}
+```
+
+Получение всей информации по заявке
+
+Request URL
+```shell
+http://localhost:8080/app/v1/booking/862cc5f8-d445-48b0-bcec-2219a97093c8
+```
+
+Server response
+```json
+{
+  "id": "862cc5f8-d445-48b0-bcec-2219a97093c8",
+  "announcement_id": "52b1c581-5ab9-48c1-9df6-52f29bc71872",
+  "movie_title": "Fake movie",
+  "author_name": "Michael Simpson",
+  "guest_name": "Greg Porter",
+  "author_status": null,
+  "guest_status": true,
+  "guest_rating": 0,
+  "author_rating": 0.2,
+  "event_time": "2023-05-26T11:20:39.945723+00:00"
+}
+```
+
+Получение списка заявок
+
+Request URL
+```shell
+http://localhost:8080/app/v1/bookings?filter%5Bself%5D=guest
+```
+
+Server response
+```json
+[
+  {
+    "id": "862cc5f8-d445-48b0-bcec-2219a97093c8",
+    "author_name": "Michael Simpson",
+    "guest_name": "Greg Porter",
+    "author_status": null,
+    "guest_status": true
+  }
+]
+```
 
 ## AUTH API
 

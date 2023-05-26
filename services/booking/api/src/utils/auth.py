@@ -20,8 +20,7 @@ class AuthHandler:
 
     async def decode_token(self, token):
         try:
-            token = jwt.decode(token, self.secret,
-                               algorithms=settings.jwt.ALGORITHM)
+            token = jwt.decode(token, self.secret, algorithms=settings.jwt.ALGORITHM)
             return {
                 'user_id': token['sub'],
                 'claims': {
@@ -30,20 +29,11 @@ class AuthHandler:
                 },
             }
         except jwt.ExpiredSignatureError:
-            raise HTTPException(
-                status_code=HTTPStatus.UNAUTHORIZED,
-                detail='Signature has expired'
-            )
+            raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail='Signature has expired')
         except jwt.InvalidTokenError:
-            raise HTTPException(
-                status_code=HTTPStatus.UNAUTHORIZED,
-                detail='Token is invalid'
-            )
+            raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail='Token is invalid')
 
-    async def auth_wrapper(
-            self,
-            auth: HTTPAuthorizationCredentials = Security(security),
-    ):
+    async def auth_wrapper(self, auth: HTTPAuthorizationCredentials = Security(security)):
         return await self.decode_token(auth.credentials)
 
 
@@ -52,6 +42,12 @@ def _parse_auth_header(
     access_token_title: str = 'Bearer',
     refresh_token_title: str = 'Refresh',
 ) -> dict:
+    """Parses a Authorization/Authentication http header and extracts the access + request
+    tokens if present.
+    Example header:
+    "Authorization: Bearer AAA, Refresh BBB"
+    """
+
     def _match_token(token_title: str) -> Optional[str]:
         expression = re.escape(token_title) + r' ([^\s,]+)'
         match = re.search(expression, auth_header)
@@ -60,8 +56,7 @@ def _parse_auth_header(
         except (AttributeError, IndexError):
             return None
 
-    return {'access_token': _match_token(access_token_title),
-            'refresh_token': _match_token(refresh_token_title)}
+    return {'access_token': _match_token(access_token_title), 'refresh_token': _match_token(refresh_token_title)}
 
 
 def parse_header(auth_header) -> dict:
@@ -87,6 +82,5 @@ def _headers() -> str:
         'permissions': [0, 3],
         'is_super': True,
     }
-    access_token = jwt.encode(data, settings.jwt.SECRET_KEY,
-                              settings.jwt.ALGORITHM)
+    access_token = jwt.encode(data, settings.jwt.SECRET_KEY, settings.jwt.ALGORITHM)
     return {'Authorization': 'Bearer ' + access_token}

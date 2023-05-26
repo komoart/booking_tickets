@@ -7,6 +7,7 @@ from fastapi.responses import ORJSONResponse
 from api.v1 import announcement, booking
 from core.config import settings
 from core.logger import LOGGING
+from db.pg_db import init_models
 from middleware.auth import auth_middleware
 from middleware.logger import logging_middleware
 from utils.sentry import init_sentry
@@ -26,6 +27,11 @@ logging_middleware(app=app)
 if not settings.debug.DEBUG:
     auth_middleware(app=app)
 
+
+@app.on_event('startup')
+async def startup():
+    await init_models()
+    
 
 app.include_router(
     announcement.router,
