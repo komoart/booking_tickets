@@ -26,11 +26,6 @@ app = FastAPI(
 logging_middleware(app=app)
 if not settings.debug.DEBUG:
     auth_middleware(app=app)
-
-
-@app.on_event('startup')
-async def startup():
-    await init_models()
     
 
 app.include_router(

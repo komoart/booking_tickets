@@ -1,13 +1,14 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import TIMESTAMP, Boolean, Column, ForeignKey, UniqueConstraint, inspect
+from sqlalchemy import TIMESTAMP, Boolean, Column, ForeignKey, UniqueConstraint, inspect, MetaData
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base
 
 from db.models.announcement import Announcement
 
-Base = declarative_base()
+metadata = MetaData()
+Base = declarative_base(metadata=metadata)
 
 
 class Booking(Base):

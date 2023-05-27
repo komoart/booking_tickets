@@ -18,3 +18,4 @@ python-logstash==0.4.8
 redis==4.5.4
 faker==17.6.0
 sentry-sdk==1.23.1
+alembic==1.11.1
