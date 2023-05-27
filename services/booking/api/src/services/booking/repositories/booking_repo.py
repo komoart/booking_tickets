@@ -150,9 +150,9 @@ class BookingSqlachemyRepository(_protocols.BookingRepositoryProtocol):
         :return: список заявок
         """
         _query = select(Booking)
-        if query.role.value == 'guest':
+        if query.role.value == layer_payload.Role.guest.value:
             _query = _query.where(Booking.guest_id == user_id)
-        elif query.role.value == 'author':
+        elif query.role.value == layer_payload.Role.author.value:
             _query = _query.where(Booking.author_id == user_id)
         else:
             raise exc.ValueMissingError
