@@ -2,11 +2,12 @@ import enum
 import uuid
 from datetime import datetime
 
-from sqlalchemy import TIMESTAMP, Boolean, Column, Enum, Integer, String, UniqueConstraint, inspect
+from sqlalchemy import TIMESTAMP, Boolean, Column, Enum, Integer, String, UniqueConstraint, inspect, MetaData
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base
 
-Base = declarative_base()
+metadata = MetaData()
+Base = declarative_base(metadata=metadata)
 
 
 class EventStatus(enum.Enum):
